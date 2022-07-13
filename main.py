@@ -4,7 +4,7 @@ from pyquery import PyQuery as pquery
 import urllib3
 urllib3.disable_warnings()
 
-
+import webbrowser
 
 def timestamp():
     return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -49,6 +49,8 @@ def main():
 
         full_res_idx = imgs_text.index(full_res_str[0])
         img_link = 'https:' + imgs_links[full_res_idx]
+
+        webbrowser.open(img_link)
 
         count+=1
         if page_num < 247:
