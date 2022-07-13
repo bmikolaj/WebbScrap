@@ -17,9 +17,9 @@ def main():
     print(f'{timestamp()} Starting...')
 
     count=0
-    previous = ''
     while (active):
         py = pquery(active, verify=False)
+        page_num = int([i.text() for i in py.find("div.controls").parent().find('li').items()][0])
 
         span = py.find("span")
         spans = [i.text() for i in span.items()]
@@ -28,12 +28,11 @@ def main():
             next_idx = spans.index("Next")
             next = 'https://webbtelescope.org' + [i.attr("href") for i in span.eq(next_idx).parent().items()][0]
         except ValueError:
-            if count == 247:
+            if page_num == 247:
                 pass
             else:
-                print(previous)
                 print(active)
-                print(count)
+                print(page_num)
                 print(timestamp())
                 raise
 
@@ -51,23 +50,12 @@ def main():
         full_res_idx = imgs_text.index(full_res_str[0])
         img_link = 'https:' + imgs_links[full_res_idx]
 
-        if img_link.split('.')[-1] not in ['jpg','png']:
-            print(img_link)
-            print(active)
-            print(count)
-            print(timestamp())
-            raise Exception
-
-
         count+=1
-        if count < 247:
-            previous = active
+        if page_num < 247:
             active = next
         else:
-            print(previous)
             break
 
-    print(count)
     print(f'{timestamp()} Done...')
 
 
